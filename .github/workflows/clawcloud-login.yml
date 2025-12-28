@@ -22,7 +22,8 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install playwright pyotp
+          # 👇 修改点 1: 这里增加了 requests 库，否则脚本发不出去通知会报错
+          pip install playwright pyotp requests
           playwright install chromium
 
       - name: Run Login Script
@@ -30,6 +31,9 @@ jobs:
           GH_USERNAME: ${{ secrets.GH_USERNAME }}
           GH_PASSWORD: ${{ secrets.GH_PASSWORD }}
           GH_2FA_SECRET: ${{ secrets.GH_2FA_SECRET }}
+          # 👇 修改点 2: 注入 Telegram 的 Secrets 变量
+          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+          TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
         
         run: python -u login_script.py
 
